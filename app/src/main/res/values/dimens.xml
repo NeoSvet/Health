@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="def_indent">16dp</dimen>
+    <dimen name="mini_indent">8dp</dimen>
+    <dimen name="icon_size">20dp</dimen>
+</resources>
