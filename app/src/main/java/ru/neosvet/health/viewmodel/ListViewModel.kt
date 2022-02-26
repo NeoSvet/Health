@@ -17,9 +17,11 @@ import java.util.*
 
 class ListViewModel : ViewModel() {
     companion object {
-        private const val MIN_PRESSURE = 110
-        private const val MAX_PRESSURE = 130
+        private const val WARNINGS_PRESSURE = 130
         private const val CRITICAL_PRESSURE = 150
+        private val colorNormal = Color.parseColor("#b9e7b9")
+        private val colorWarnings = Color.parseColor("#faeaae")
+        private val colorCritical = Color.parseColor("#ff6446")
     }
 
     private val repository: Repository = FakeRepository()
@@ -70,9 +72,9 @@ class ListViewModel : ViewModel() {
     private fun getColorByPressure(pressure: Int): Int {
         //TODO сделать оттенки в соответствии степени отклонения
         return when {
-            pressure in MIN_PRESSURE until MAX_PRESSURE -> Color.GREEN
-            pressure > CRITICAL_PRESSURE -> Color.RED
-            else -> Color.YELLOW
+            pressure > WARNINGS_PRESSURE -> colorWarnings
+            pressure > CRITICAL_PRESSURE -> colorCritical
+            else -> colorNormal
         }
     }
 }
