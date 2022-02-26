@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.launch
 import ru.neosvet.health.data.FakeRepository
 import ru.neosvet.health.data.Repository
-import ru.neosvet.health.list.Health
+import ru.neosvet.health.list.DataItem
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -44,12 +44,16 @@ class ListViewModel : ViewModel() {
     }
 
     private suspend fun loadList() {
-        val list = mutableListOf<Health>()
+        val list = mutableListOf<DataItem>()
+        var lastDt: DateTime? = null
         repository.getList().forEach {
             val dt = getDateTime(it.time)
+            if(lastDt?.date != dt.date) {
+                list.add(DataItem.Title(dt.date))
+                lastDt = dt
+            }
             val color = getColorByPressure(it.highPressure)
-            val item = Health(
-                date = dt.date,
+            val item = DataItem.Health(
                 time = dt.time,
                 highPressure = it.highPressure,
                 lowPressure = it.lowPressure,
