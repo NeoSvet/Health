@@ -45,16 +45,18 @@ class ListViewModel : ViewModel() {
 
     private suspend fun loadList() {
         val list = mutableListOf<DataItem>()
-        var lastDt: DateTime? = null
+        var lastDate: String? = null
         repository.getList().forEach {
-            val dt = getDateTime(it.time)
-            if(lastDt?.date != dt.date) {
-                list.add(DataItem.Title(dt.date))
-                lastDt = dt
+            val d = Date(it.time)
+            val date = dateFormat.format(d)
+            val time = timeFormat.format(d)
+            if (lastDate != date) {
+                list.add(DataItem.Title(date))
+                lastDate = date
             }
             val color = getColorByPressure(it.highPressure)
             val item = DataItem.Health(
-                time = dt.time,
+                time = time,
                 highPressure = it.highPressure,
                 lowPressure = it.lowPressure,
                 pulse = it.pulse,
@@ -72,13 +74,5 @@ class ListViewModel : ViewModel() {
             pressure > CRITICAL_PRESSURE -> Color.RED
             else -> Color.YELLOW
         }
-    }
-
-    private fun getDateTime(time: Long): DateTime {
-        val date = Date(time)
-        return DateTime(
-            date = dateFormat.format(date),
-            time = timeFormat.format(date)
-        )
     }
 }
