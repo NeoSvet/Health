@@ -1,9 +1,13 @@
 package ru.neosvet.health.view
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
@@ -28,6 +32,8 @@ class ListFragment : FragmentWithMessage() {
     }
     private val binding by viewBinding<FragmentListBinding>()
     private var isNeedUpdateList = true
+    private lateinit var anMin: Animation
+    private lateinit var anMax: Animation
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,13 +44,45 @@ class ListFragment : FragmentWithMessage() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initAnimation()
         addDividerInList()
+        addHiderFab()
         binding.fabAdd.setOnClickListener {
             isNeedUpdateList = true
             val navController = this.findNavController()
             navController.navigate(R.id.action_nav_list_to_add)
         }
         model.state.observe(requireActivity(), this::changeModelState)
+    }
+
+    private fun initAnimation() {
+        anMin = AnimationUtils.loadAnimation(requireContext(), R.anim.minimize)
+        anMin.setAnimationListener(object : Animation.AnimationListener {
+            override fun onAnimationStart(animation: Animation) {}
+            override fun onAnimationEnd(animation: Animation) {
+                binding.fabAdd.isVisible = false
+            }
+
+            override fun onAnimationRepeat(animation: Animation) {}
+        })
+        anMax = AnimationUtils.loadAnimation(requireContext(), R.anim.maximize)
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    private fun addHiderFab() {
+        binding.rvList.setOnTouchListener { _, event ->
+            if (event.action == MotionEvent.ACTION_DOWN) {
+                binding.fabAdd.clearAnimation()
+                binding.fabAdd.startAnimation(anMin)
+            } else if (event.action == MotionEvent.ACTION_UP
+                || event.action == MotionEvent.ACTION_CANCEL
+            ) {
+                binding.fabAdd.clearAnimation()
+                binding.fabAdd.isVisible = true
+                binding.fabAdd.startAnimation(anMax)
+            }
+            return@setOnTouchListener false
+        }
     }
 
     override fun onResume() {
