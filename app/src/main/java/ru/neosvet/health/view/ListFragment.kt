@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -70,6 +71,7 @@ class ListFragment : FragmentWithMessage() {
     private fun changeModelState(state: ListState) {
         when (state) {
             is ListState.Error -> {
+                binding.pbLoad.isVisible = false
                 binding.fabAdd.Snackbar(
                     String.format(
                         getString(R.string.error_format),
@@ -79,8 +81,15 @@ class ListFragment : FragmentWithMessage() {
                     message = it
                 }.show()
             }
-            ListState.Loading -> TODO()
-            is ListState.Success -> setList(state.list)
+            ListState.Loading -> {
+                binding.rvList.isVisible = false
+                binding.pbLoad.isVisible = true
+            }
+            is ListState.Success -> {
+                binding.rvList.isVisible = true
+                binding.pbLoad.isVisible = false
+                setList(state.list)
+            }
         }
     }
 

@@ -51,22 +51,25 @@ class AddFragment : FragmentWithMessage() {
     private fun changeModelState(state: AddState) {
         when (state) {
             is AddState.Error -> {
-                binding.btnAdd.Snackbar(
-                    String.format(
-                        getString(R.string.error_format),
-                        state.error
-                    )
-                ).also {
-                    message = it
-                }.show()
+                val msg = String.format(getString(R.string.error_format), state.error)
+                finishLoad(msg)
             }
-            AddState.Loading -> TODO()
+            AddState.Loading -> {
+                binding.pbLoad.isInvisible = false
+                binding.btnAdd.isInvisible = true
+            }
             AddState.Success -> {
-                binding.btnAdd.Snackbar(getString(R.string.added)).also {
-                    message = it
-                }.show()
+                finishLoad(getString(R.string.added))
             }
         }
+    }
+
+    private fun finishLoad(msg: String) {
+        binding.pbLoad.isInvisible = true
+        binding.btnAdd.isInvisible = false
+        binding.btnAdd.Snackbar(msg).also {
+            message = it
+        }.show()
     }
 
     private fun setTextWatchers() {
