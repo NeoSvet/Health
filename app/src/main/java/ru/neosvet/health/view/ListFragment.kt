@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -15,13 +14,14 @@ import ru.neosvet.health.R
 import ru.neosvet.health.databinding.FragmentListBinding
 import ru.neosvet.health.list.DataItem
 import ru.neosvet.health.list.HealthAdapter
+import ru.neosvet.health.utils.FragmentWithMessage
 import ru.neosvet.health.utils.Snackbar
 import ru.neosvet.health.utils.viewBinding
 import ru.neosvet.health.viewmodel.ListIntent
 import ru.neosvet.health.viewmodel.ListState
 import ru.neosvet.health.viewmodel.ListViewModel
 
-class ListFragment : Fragment() {
+class ListFragment : FragmentWithMessage() {
     private val model: ListViewModel by lazy {
         ViewModelProvider(this).get(ListViewModel::class.java)
     }
@@ -69,13 +69,16 @@ class ListFragment : Fragment() {
 
     private fun changeModelState(state: ListState) {
         when (state) {
-            is ListState.Error ->
+            is ListState.Error -> {
                 binding.fabAdd.Snackbar(
                     String.format(
                         getString(R.string.error_format),
                         state.error
                     )
-                ).show()
+                ).also {
+                    message = it
+                }.show()
+            }
             ListState.Loading -> TODO()
             is ListState.Success -> setList(state.list)
         }

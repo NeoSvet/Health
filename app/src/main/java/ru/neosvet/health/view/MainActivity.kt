@@ -8,6 +8,7 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import ru.neosvet.health.R
 import ru.neosvet.health.databinding.ActivityMainBinding
+import ru.neosvet.health.utils.FragmentWithMessage
 
 class MainActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
@@ -28,5 +29,13 @@ class MainActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+    }
+
+    override fun onBackPressed() {
+        val navHostFragment = supportFragmentManager.fragments[0]
+        val activeFragment = navHostFragment.childFragmentManager.fragments[0]
+        if (activeFragment is FragmentWithMessage && activeFragment.dismiss())
+            return
+        super.onBackPressed()
     }
 }

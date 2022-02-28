@@ -10,21 +10,17 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isInvisible
 import androidx.core.view.updateLayoutParams
 import androidx.core.widget.doAfterTextChanged
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
 import ru.neosvet.health.R
 import ru.neosvet.health.databinding.FragmentAddBinding
-import ru.neosvet.health.utils.Snackbar
-import ru.neosvet.health.utils.isCorrect
-import ru.neosvet.health.utils.toInt
-import ru.neosvet.health.utils.viewBinding
+import ru.neosvet.health.utils.*
 import ru.neosvet.health.viewmodel.AddIntent
 import ru.neosvet.health.viewmodel.AddState
 import ru.neosvet.health.viewmodel.AddViewModel
 
-class AddFragment : Fragment() {
+class AddFragment : FragmentWithMessage() {
     private val model: AddViewModel by lazy {
         ViewModelProvider(this).get(AddViewModel::class.java)
     }
@@ -54,16 +50,22 @@ class AddFragment : Fragment() {
 
     private fun changeModelState(state: AddState) {
         when (state) {
-            is AddState.Error ->
+            is AddState.Error -> {
                 binding.btnAdd.Snackbar(
                     String.format(
                         getString(R.string.error_format),
                         state.error
                     )
-                ).show()
+                ).also {
+                    message = it
+                }.show()
+            }
             AddState.Loading -> TODO()
-            AddState.Success ->
-                binding.btnAdd.Snackbar(getString(R.string.added)).show()
+            AddState.Success -> {
+                binding.btnAdd.Snackbar(getString(R.string.added)).also {
+                    message = it
+                }.show()
+            }
         }
     }
 
