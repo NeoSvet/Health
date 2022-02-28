@@ -20,12 +20,12 @@ import ru.neosvet.health.viewmodel.ListIntent
 import ru.neosvet.health.viewmodel.ListState
 import ru.neosvet.health.viewmodel.ListViewModel
 
-
 class ListFragment : Fragment() {
     private val model: ListViewModel by lazy {
         ViewModelProvider(this).get(ListViewModel::class.java)
     }
     private val binding by viewBinding<FragmentListBinding>()
+    private var isNeedUpdateList = true
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,10 +38,18 @@ class ListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         addDividerInList()
         binding.fabAdd.setOnClickListener {
+            isNeedUpdateList = true
             val navController = this.findNavController()
             navController.navigate(R.id.action_nav_list_to_add)
         }
         model.state.observe(requireActivity(), this::changeModelState)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (isNeedUpdateList.not())
+            return
+        isNeedUpdateList = false
         lifecycleScope.launch {
             model.userIntent.send(ListIntent.GetList)
         }
