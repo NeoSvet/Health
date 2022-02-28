@@ -39,7 +39,7 @@
         android:layout_height="wrap_content"
         android:textSize="@dimen/middle_text"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_date"
+        app:layout_constraintTop_toTopOf="@id/btn_time"
         tools:text="00.00.0000" />
 
     <com.google.android.material.textfield.TextInputLayout
@@ -105,7 +105,7 @@
         android:background="?attr/colorPrimary"
         android:visibility="invisible"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btn_time" />
+        app:layout_constraintTop_toBottomOf="@id/tv_time" />
 
     <DatePicker
         android:id="@+id/p_date"
@@ -114,7 +114,7 @@
         android:background="?attr/colorPrimary"
         android:visibility="invisible"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btn_date" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_add"

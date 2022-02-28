@@ -1,0 +1,16 @@
+<resources>
+
+    <style name="TextInputStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeColor">?attr/colorSecondary</item>
+        <item name="hintTextColor">?attr/colorPrimary</item>
+        <item name="android:textColorHint">?attr/colorPrimary</item>
+        <item name="boxStrokeWidth">2dp</item>
+    </style>
+
+    <style name="EditTextStyle" parent="Widget.AppCompat.EditText">
+        <item name="android:textColor">?attr/colorOnPrimary</item>
+        <item name="android:inputType">number</item>
+        <item name="android:maxLength">3</item>
+        <item name="android:imeOptions">actionDone</item>
+    </style>
+</resources>
