@@ -34,6 +34,7 @@ class ListFragment : FragmentWithMessage() {
     private var isNeedUpdateList = true
     private lateinit var anMin: Animation
     private lateinit var anMax: Animation
+    private var isHide = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -60,7 +61,8 @@ class ListFragment : FragmentWithMessage() {
         anMin.setAnimationListener(object : Animation.AnimationListener {
             override fun onAnimationStart(animation: Animation) {}
             override fun onAnimationEnd(animation: Animation) {
-                binding.fabAdd.isVisible = false
+                if (isHide)
+                    binding.fabAdd.isVisible = false
             }
 
             override fun onAnimationRepeat(animation: Animation) {}
@@ -73,11 +75,13 @@ class ListFragment : FragmentWithMessage() {
         binding.rvList.setOnTouchListener { _, event ->
             if (event.action == MotionEvent.ACTION_DOWN) {
                 binding.fabAdd.clearAnimation()
+                isHide = true
                 binding.fabAdd.startAnimation(anMin)
             } else if (event.action == MotionEvent.ACTION_UP
                 || event.action == MotionEvent.ACTION_CANCEL
             ) {
                 binding.fabAdd.clearAnimation()
+                isHide = false
                 binding.fabAdd.isVisible = true
                 binding.fabAdd.startAnimation(anMax)
             }
