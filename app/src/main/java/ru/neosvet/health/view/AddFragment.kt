@@ -13,17 +13,16 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.textfield.TextInputEditText
 import kotlinx.coroutines.launch
 import ru.neosvet.health.R
 import ru.neosvet.health.databinding.FragmentAddBinding
+import ru.neosvet.health.utils.Snackbar
 import ru.neosvet.health.utils.isCorrect
+import ru.neosvet.health.utils.toInt
 import ru.neosvet.health.utils.viewBinding
 import ru.neosvet.health.viewmodel.AddIntent
 import ru.neosvet.health.viewmodel.AddState
 import ru.neosvet.health.viewmodel.AddViewModel
-import ru.neosvet.health.utils.toInt
 
 class AddFragment : Fragment() {
     private val model: AddViewModel by lazy {
@@ -55,11 +54,16 @@ class AddFragment : Fragment() {
 
     private fun changeModelState(state: AddState) {
         when (state) {
-            is AddState.Error -> TODO()
+            is AddState.Error ->
+                binding.btnAdd.Snackbar(
+                    String.format(
+                        getString(R.string.error_format),
+                        state.error
+                    )
+                ).show()
             AddState.Loading -> TODO()
             AddState.Success ->
-                Snackbar.make(binding.btnAdd, getString(R.string.added), Snackbar.LENGTH_SHORT)
-                    .show()
+                binding.btnAdd.Snackbar(getString(R.string.added)).show()
         }
     }
 
@@ -70,7 +74,8 @@ class AddFragment : Fragment() {
     }
 
     private fun textWatcher(text: Editable?) = with(binding) {
-        btnAdd.isEnabled = etPulse.isCorrect() && etHighPressure.isCorrect() && etLowPressure.isCorrect()
+        btnAdd.isEnabled =
+            etPulse.isCorrect() && etHighPressure.isCorrect() && etLowPressure.isCorrect()
     }
 
     private fun setClickListeners() = with(binding) {

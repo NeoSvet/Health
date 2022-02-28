@@ -15,6 +15,7 @@ import ru.neosvet.health.R
 import ru.neosvet.health.databinding.FragmentListBinding
 import ru.neosvet.health.list.DataItem
 import ru.neosvet.health.list.HealthAdapter
+import ru.neosvet.health.utils.Snackbar
 import ru.neosvet.health.utils.viewBinding
 import ru.neosvet.health.viewmodel.ListIntent
 import ru.neosvet.health.viewmodel.ListState
@@ -68,7 +69,13 @@ class ListFragment : Fragment() {
 
     private fun changeModelState(state: ListState) {
         when (state) {
-            is ListState.Error -> TODO()
+            is ListState.Error ->
+                binding.fabAdd.Snackbar(
+                    String.format(
+                        getString(R.string.error_format),
+                        state.error
+                    )
+                ).show()
             ListState.Loading -> TODO()
             is ListState.Success -> setList(state.list)
         }
