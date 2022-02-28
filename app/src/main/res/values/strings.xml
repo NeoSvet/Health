@@ -9,7 +9,7 @@
     <string name="time">Время</string>
     <string name="date">Дата</string>
     <string name="close">Закрыть</string>
-    <string name="low_pressure">Низкое давление</string>
-    <string name="high_pressure">Высокое давление</string>
+    <string name="low_pressure">Нижнее давление</string>
+    <string name="high_pressure">Верхнее давление</string>
     <string name="pulse">Пульс</string>
 </resources>
