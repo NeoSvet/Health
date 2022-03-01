@@ -9,13 +9,14 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.launch
-import ru.neosvet.health.data.FakeRepository
 import ru.neosvet.health.data.Repository
 import ru.neosvet.health.list.DataItem
 import java.text.SimpleDateFormat
 import java.util.*
 
-class ListViewModel : ViewModel() {
+class ListViewModel(
+    private val repository: Repository
+) : ViewModel() {
     companion object {
         private const val PRESSURE_LEVEL1 = 130
         private const val PRESSURE_LEVEL2 = 140
@@ -26,7 +27,6 @@ class ListViewModel : ViewModel() {
         private val colorLevel3 = Color.parseColor("#ff6446")
     }
 
-    private val repository: Repository = FakeRepository()
     val userIntent = Channel<ListIntent>(Channel.UNLIMITED)
     private val _state: MutableLiveData<ListState> = MutableLiveData()
     val state: LiveData<ListState> = _state

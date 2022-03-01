@@ -8,13 +8,13 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.launch
-import ru.neosvet.health.data.FakeRepository
 import ru.neosvet.health.data.Repository
 import java.text.SimpleDateFormat
 import java.util.*
 
-class AddViewModel : ViewModel() {
-    private val repository: Repository = FakeRepository()
+class AddViewModel(
+    private val repository: Repository
+) : ViewModel() {
     val userIntent = Channel<AddIntent>(Channel.UNLIMITED)
     private val _state: MutableLiveData<AddState> = MutableLiveData()
     val state: LiveData<AddState> = _state

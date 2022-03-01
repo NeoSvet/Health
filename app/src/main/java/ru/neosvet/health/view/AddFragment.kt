@@ -10,9 +10,9 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isInvisible
 import androidx.core.view.updateLayoutParams
 import androidx.core.widget.doAfterTextChanged
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.neosvet.health.R
 import ru.neosvet.health.databinding.FragmentAddBinding
 import ru.neosvet.health.utils.*
@@ -21,9 +21,7 @@ import ru.neosvet.health.viewmodel.AddState
 import ru.neosvet.health.viewmodel.AddViewModel
 
 class AddFragment : FragmentWithMessage() {
-    private val model: AddViewModel by lazy {
-        ViewModelProvider(this).get(AddViewModel::class.java)
-    }
+    private val model: AddViewModel by viewModel()
     private val binding by viewBinding<FragmentAddBinding>()
 
     override fun onCreateView(

@@ -10,11 +10,11 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.neosvet.health.R
 import ru.neosvet.health.databinding.FragmentListBinding
 import ru.neosvet.health.list.DataItem
@@ -27,9 +27,7 @@ import ru.neosvet.health.viewmodel.ListState
 import ru.neosvet.health.viewmodel.ListViewModel
 
 class ListFragment : FragmentWithMessage() {
-    private val model: ListViewModel by lazy {
-        ViewModelProvider(this).get(ListViewModel::class.java)
-    }
+    private val model: ListViewModel by viewModel()
     private val binding by viewBinding<FragmentListBinding>()
     private var isNeedUpdateList = true
     private lateinit var anMin: Animation
