@@ -36,6 +36,7 @@ class AddViewModel(
     }
 
     private suspend fun addData(data: AddIntent.Add) {
+        _state.postValue(AddState.Loading)
         val tz = TimeZone.getDefault().rawOffset
         val time = timeFormat.parse(data.time)!!.time + tz
         val date = dateFormat.parse(data.date)!!.time

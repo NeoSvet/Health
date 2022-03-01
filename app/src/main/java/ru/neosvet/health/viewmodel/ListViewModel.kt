@@ -48,6 +48,7 @@ class ListViewModel(
     }
 
     private suspend fun loadList() {
+        _state.postValue(ListState.Loading)
         val list = mutableListOf<DataItem>()
         var lastDate: String? = null
         repository.getList().forEach {
