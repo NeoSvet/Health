@@ -16,6 +16,15 @@ class FakeRepository : Repository {
 
     override suspend fun getList(): List<HealthEntity> = list.sortedWith(compareByDescending { it.time })
 
+    override suspend fun delete(id: String) {
+       for (item in list) {
+           if(item.id == id) {
+               list.remove(item)
+               return
+           }
+       }
+    }
+
     override suspend fun add(time: Long, highPressure: Int, lowPressure: Int, pulse: Int) {
         list.add(
             HealthEntity(

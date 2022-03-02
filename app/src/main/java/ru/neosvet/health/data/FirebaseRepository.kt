@@ -35,6 +35,20 @@ class FirebaseRepository : Repository {
         }
     }
 
+    override suspend fun delete(id: String) {
+        return suspendCoroutine { cont ->
+            db.collection(COLLECTION_NAME)
+                .document(id)
+                .delete()
+                .addOnSuccessListener {
+                    cont.resume(Unit)
+                }
+                .addOnFailureListener {
+                    cont.resumeWithException(it)
+                }
+        }
+    }
+
     private fun getListFrom(result: QuerySnapshot): List<HealthEntity> {
         val list = mutableListOf<HealthEntity>()
         for (doc in result) {

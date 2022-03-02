@@ -42,9 +42,14 @@ class ListViewModel(
             userIntent.consumeAsFlow().collect {
                 when (it) {
                     is ListIntent.GetList -> loadList()
+                    is ListIntent.Delete -> deleteItem(it.id)
                 }
             }
         }
+    }
+
+    private suspend fun deleteItem(id: String) {
+        repository.delete(id)
     }
 
     private suspend fun loadList() {
@@ -61,6 +66,7 @@ class ListViewModel(
             }
             val color = getColorByPressure(it.highPressure)
             val item = DataItem.Health(
+                id = it.id,
                 time = time,
                 highPressure = it.highPressure,
                 lowPressure = it.lowPressure,
