@@ -6,6 +6,7 @@ import android.text.Editable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isInvisible
 import androidx.core.view.updateLayoutParams
@@ -33,6 +34,10 @@ class AddFragment : FragmentWithMessage() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val bar = (requireActivity() as AppCompatActivity).supportActionBar
+        bar?.setDisplayHomeAsUpEnabled(true)
+
         setTimeValue()
         setDateValue()
 
